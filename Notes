@@ -1,7 +1,31 @@
 IDR- Irreproducible Discovery Rate
 Measures consistency between 2 biological replicates
 
-Commands example to calculate IDR----------
+Commands example to calculate IDR ----------
 
 cat rep1a.narrowPeak|sort -k8,8nr|head –n 100000 >rep1a_sorted.narrowPeak
 cat rep1b.narrowPeak|sort -k8,8nr|head –n 100000 >rep1b_sorted.narrowPeak
+
+
+
+
+
+
+NRF- Non Redundant Fraction of reads ----------
+
+From ChIC Bioconductor package 
+## 4 NRF calculation
+    message("\nNRF calculation")
+    
+    ALL_TAGS <- sum(lengths(data$tags))
+    UNIQUE_TAGS <- sum(lengths(lapply(data$tags, unique)))
+    UNIQUE_TAGS_nostrand <- sum(lengths(lapply(data$tags, FUN = function(x) {
+        unique(abs(x))
+    })))
+    
+    NRF <- UNIQUE_TAGS/ALL_TAGS
+    NRF_nostrand <- UNIQUE_TAGS_nostrand/ALL_TAGS
+    
+    ## to compensate for lib size differences
+    
+   
