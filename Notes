@@ -1,0 +1,7 @@
+IDR- Irreproducible Discovery Rate
+Measures consistency between 2 biological replicates
+
+Commands example to calculate IDR----------
+
+cat rep1a.narrowPeak|sort -k8,8nr|head –n 100000 >rep1a_sorted.narrowPeak
+cat rep1b.narrowPeak|sort -k8,8nr|head –n 100000 >rep1b_sorted.narrowPeak
