@@ -6,10 +6,7 @@ Commands example to calculate IDR ----------
 cat rep1a.narrowPeak|sort -k8,8nr|head –n 100000 >rep1a_sorted.narrowPeak
 cat rep1b.narrowPeak|sort -k8,8nr|head –n 100000 >rep1b_sorted.narrowPeak
 
-
-
-
-
+**************************************************
 
 NRF- Non Redundant Fraction of reads ----------
 
@@ -28,4 +25,48 @@ From ChIC Bioconductor package
     
     ## to compensate for lib size differences
     
-   
+**************************************************
+
+PBC- PCR Bottleneck Coeffiecient ----------
+
+From ChIC Bioconductor package 
+
+    ## N1= number of genomic locations to which EXACTLY one 
+    ## unique mapping read maps
+    ## Nd = the number of genomic locations to which AT LEAST 
+    ## one unique mapping read
+    ## maps, i.e. the number of non-redundant, unique mapping reads
+    ## N1<-sum(sapply(data$tags, FUN=function(x) {checkDuplicate<-duplicated(x)
+    ## duplicated_positions<-unique(x[checkDuplicate]) OUT<-x[!(x %in%
+    ## duplicated_positions)] return(length(OUT)) }))
+    
+    N1 <- sum(unlist(lapply(data$tags, FUN = function(x) {
+        checkDuplicate <- duplicated(x)
+        duplicated_positions <- unique(x[checkDuplicate])
+        OUT <- x[!(x %in% duplicated_positions)]
+        return(length(OUT))
+    })))
+
+    pb$tick()
+    
+    ## Nd<-sum(sapply(lapply(data$tags, unique), length))
+    Nd <- sum(unlist(lapply(data$tags, FUN = function(x) {
+        length(unique(x))
+    })))
+    
+    PBC <- N1/Nd
+    tag.shift <- round(strandShift/2)
+    finalList <- append(append(list(CC_StrandShift = strandShift, 
+        tag.shift = tag.shift, 
+        N1 = round(N1, 3), 
+        Nd = round(Nd, 3), 
+        CC_PBC = round(PBC, 3), 
+        CC_readLength = read_length, 
+        CC_UNIQUE_TAGS_LibSizeadjusted = UNIQUE_TAGS_LibSizeadjusted), 
+        phantomScores), 
+        STATS_NRF)
+    pb$tick()
+    return(finalList)
+}
+
+**************************************************
