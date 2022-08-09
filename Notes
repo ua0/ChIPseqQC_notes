@@ -70,3 +70,60 @@ From ChIC Bioconductor package
 }
 
 **************************************************
+
+FRiP- Fraction of Reds in Peaks ----------
+
+From the ChIC package for sharp peaks only. They have a separate decion for broad peaks
+
+        ## Frip sharp peaks 14
+
+        sharpPeakRangesObject<-f_reduceOverlappingRegions(sharpPeakRangesObject)
+    
+        regions_data_list <- split(as.data.frame(sharpPeakRangesObject), 
+            f = seqnames(sharpPeakRangesObject))
+
+        if ( debug )
+        {        
+            if ( file.exists( file.path (getwd(),"sharpPeakRanges.bed" )))
+            {
+                file.remove( file.path (getwd(),"sharpPeakRanges.bed" ))
+            }
+            list <- lapply(regions_data_list, function(chr){
+                #print(chr)
+                text <- cbind(as.character(chr$seqnames), 
+                    as.numeric(chr$start),
+                    as.numeric(chr$end))
+
+                write.table(text, 
+                    file = file.path(getwd(),"sharpPeakRanges.bed"), 
+                    append =TRUE, 
+                    quote = FALSE, 
+                    row.names = FALSE,
+                    col.names = FALSE)
+            })
+        }
+
+        ## pb$tick()
+
+        chrl <- names(regions_data_list)
+        names(chrl) <- chrl
+        
+
+        outcountsSharpPeak <- sum(unlist(lapply(chrl, FUN = function(chr) {
+            sum(spp::points_within(x = abs(chip.test[[chr]]), 
+                fs = regions_data_list[[chr]]$start, 
+                fe = regions_data_list[[chr]]$end, 
+                return.point.counts = TRUE))
+        })))
+
+    
+        FRiP_sharpPeak <- outcountsSharpPeak/TOTAL_reads
+    } else {
+        TOTAL_reads <- 0
+        FRiP_broadPeak <- 0
+        outcountsBroadPeak <- 0
+        FRiP_sharpPeak <- 0
+        outcountsSharpPeak <- 0
+    }
+
+**************************************************
