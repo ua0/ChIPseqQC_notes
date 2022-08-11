@@ -1,7 +1,7 @@
 IDR- Irreproducible Discovery Rate
 Measures consistency between 2 biological replicates
 
-Commands example to calculate IDR ----------
+Commands example to calculate top peaks for IDR ----------
 
 cat rep1a.narrowPeak|sort -k8,8nr|head –n 100000 >rep1a_sorted.narrowPeak
 cat rep1b.narrowPeak|sort -k8,8nr|head –n 100000 >rep1b_sorted.narrowPeak
@@ -73,7 +73,7 @@ From ChIC Bioconductor package
 
 FRiP- Fraction of Reds in Peaks ----------
 
-From the ChIC package for sharp peaks only. They have a separate decion for broad peaks
+From the ChIC package for sharp peaks only. They have a separate section for broad peaks
 
         ## Frip sharp peaks 14
 
