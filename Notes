@@ -27,6 +27,34 @@ From ChIC Bioconductor package
     
 **************************************************
 
+https://monashdatafluency.github.io/rnaseq-intro/qc.html ----------
+
+How to get uniquely mapped reads for NRF?
+
+Use the following command on the final alignment bam file-
+
+samtools view -c -F 260 -q 255 ctrl_rep1_sorted_mdups.bam
+
+What does the command mean?
+samtools view - To view the contents of the bam file
+-c - count the lines of the resultant output file
+-F - samtools flag to exclude any reads/alignments
+256 - the samtools flag code for secondary alignments
+4 - samtools flag code for unmapped reads
+260 - (256+4 from above) to give together to filter out all unnecessary reads
+-q - quality score to be greater than
+255 - mapping quality (MAPQ) score code for unmapped reads in samtools
+
+The above command comes from the Monash data fluency RNAseq course - QC section.
+
+The command I finally used to get uniquely mapped reads:
+
+samtools view -c -F 260 trimmed_and_dupRemoved.bam
+
+Since it turns out -q parameter is not needed here as we have already filtered duplicates and -m 2 score in previous steps of chipqeq pipeline
+
+**************************************************
+
 PBC- PCR Bottleneck Coeffiecient ----------
 
 From ChIC Bioconductor package 
@@ -72,6 +100,7 @@ From ChIC Bioconductor package
 **************************************************
 
 #From Sergi Sayols ChipQC R tools set
+
 #' PCR bottleneck coefficient
 #'
 #' Calculate the PCR bottleneck coefficient as described in the ENCODE
